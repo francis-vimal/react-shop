@@ -81,12 +81,14 @@ function Navbar() {
             />
           </form> */}
           <div className="dropdown text-end">
+            
             <a
               href="#"
-              className="d-block link-body-emphasis text-decoration-none dropdown-toggle show"
+              className="d-block link-body-emphasis text-decoration-none dropdown-toggle"
               data-bs-toggle="dropdown"
-              aria-expanded="true"
+              aria-expanded="false"
             >
+              
               <img
                 src="https://github.com/mdo.png"
                 alt="mdo"
@@ -95,10 +97,8 @@ function Navbar() {
                 className="rounded-circle"
               />
             </a>
-            <ul
-              className="dropdown-menu text-small"
-              data-popper-placement="bottom-end"
-            >
+            <ul className="dropdown-menu text-small" style={{}}>
+              
               <li>
                 <a className="dropdown-item" href="#">
                   New project...
