@@ -38,6 +38,11 @@ function Navbar() {
                 Cart
               </a>
             </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/login">
+                Login
+              </a>
+            </li>
             {/* <li className="nav-item">
               
               <a className="nav-link disabled" aria-disabled="true">
@@ -81,14 +86,12 @@ function Navbar() {
             />
           </form> */}
           <div className="dropdown text-end">
-            
             <a
               href="#"
               className="d-block link-body-emphasis text-decoration-none dropdown-toggle"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              
               <img
                 src="https://github.com/mdo.png"
                 alt="mdo"
@@ -98,7 +101,6 @@ function Navbar() {
               />
             </a>
             <ul className="dropdown-menu text-small" style={{}}>
-              
               <li>
                 <a className="dropdown-item" href="#">
                   New project...
