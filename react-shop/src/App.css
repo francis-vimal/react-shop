@@ -31,3 +31,11 @@
 .read-the-docs {
   color: #888;
 }
+
+.sort.no-arrow::after {
+  display: none;
+}
+
+.account-arrow::after {
+  border-top: .3em solid rgb(212, 212, 212);
+}

@@ -1,12 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import GoogleSignBtn from "../GoogleSignBtn";
 import api from "../../services/api";
 
-function RegisterForm() {
-  const navigate = useNavigate();
+function RegisterForm({ onSwitchTab }) {
+  const history = useHistory();
   
   const formik = useFormik({
     initialValues: {
@@ -27,15 +27,15 @@ function RegisterForm() {
   
         console.log("✅ Successfully logged in:", response.data);
   
-        localStorage.setItem("user", JSON.stringify(response.data.token));
+        localStorage.setItem("token", JSON.stringify(response.data.token));
 
         resetForm();
   
         alert(" Successfully logged in!");
-        navigate("/home");
+        history.push("/home");
       } catch (error) {
-        console.error("❌ Error creating user:", error);
-        alert("Failed to create user.");
+        console.error("❌ Failed to log in:", error);
+        alert("Failed to log in");
       }
     }
   });
@@ -120,8 +120,10 @@ function RegisterForm() {
 
       {/* Register button */}
       <div className="text-center">
-        <p>
-          Not a member? <a href="#!">Register</a>
+        <p onClick={onSwitchTab}>
+          Not a member? <button type="button" onClick={onSwitchTab} className="btn btn-link p-0 pb-1">
+            Register
+          </button>
         </p>
       </div>
     </form>

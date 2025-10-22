@@ -105,7 +105,7 @@ function Home() {
       <div className="row w-100 px-5" style={{ margin: 0 }}>
         {products.map((product) => (
           <div className="col-md-3 mb-4" key={product.id}>
-            <Link to={`/product/${product.id}`}  className="card h-100 text-decoration-none">
+            <Link to={`/product/${product.id}`} className="card h-100 p-1 p-md-2 p-lg-4 text-decoration-none">
               <img
                 src={product.image}
                 className="card-img-top p-4"
