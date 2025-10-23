@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import GoogleSignBtn from "../GoogleSignBtn";
 import api from "../../services/api";
 
-function RegisterForm({ onSwitchTab }) {
+function LoginForm({ onSwitchTab }) {
   const history = useHistory();
   
   const formik = useFormik({
@@ -25,14 +25,16 @@ function RegisterForm({ onSwitchTab }) {
           password: values.loginPassword
         });
   
-        console.log("✅ Successfully logged in:", response.data);
-  
         localStorage.setItem("token", JSON.stringify(response.data.token));
-
         resetForm();
-  
-        alert(" Successfully logged in!");
         history.push("/home");
+        
+        api.get("/users").then((res) => {
+          const user = res.data.find((data) => {
+            return data.username === values.loginName
+          })
+          localStorage.setItem("user", JSON.stringify(user));
+        });
       } catch (error) {
         console.error("❌ Failed to log in:", error);
         alert("Failed to log in");
@@ -130,4 +132,4 @@ function RegisterForm({ onSwitchTab }) {
   );
 }
 
-export default RegisterForm;
+export default LoginForm;

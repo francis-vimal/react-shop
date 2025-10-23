@@ -11,6 +11,7 @@ function AppNavbar() {
   function handleLogout() {
     localStorage.removeItem("token");
     localStorage.removeItem("googleUser");
+    localStorage.removeItem("userId");
     history.push("/login");
   }
 

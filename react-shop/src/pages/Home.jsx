@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Dropdown, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Dropdown, Form } from "react-bootstrap";
+import ToolTip from "../components/ToolTip";
 import api from "../services/api";
 
 function Home() {
@@ -24,14 +25,10 @@ function Home() {
 
   function onSearch(event) {
     const searchTerm = event.target.value.trim().toLowerCase();
-    console.log("search: ", searchTerm);
-
-    // clear previous timer before setting new one
     if (searchTimeout.current) {
       clearTimeout(searchTimeout.current);
     }
 
-    // add debounce delay (e.g. 400ms)
     searchTimeout.current = setTimeout(() => {
       if (searchTerm === "") {
         setProducts(allProducts);
@@ -113,18 +110,7 @@ function Home() {
                 alt={product.title}
               />
               <div className="card-body">
-                <OverlayTrigger
-                  placement="top"
-                  overlay={<Tooltip>{product.title}</Tooltip>}
-                >
-                  <h5
-                    className="card-title truncate-text"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                  >
-                    {product.title}
-                  </h5>
-                </OverlayTrigger>
+                <ToolTip product={product.title} />
                 <p className="card-text">${product.price}</p>
                 {product.stock === 0 ? (
                   <button className="btn btn-secondary w-100" disabled>

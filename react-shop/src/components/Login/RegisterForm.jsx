@@ -35,13 +35,7 @@ function RegisterForm() {
           email: values.email,
           password: values.password,
         }));
-  
-        console.log("User created:", response);
-  
-        // Optionally reset the form
         resetForm();
-  
-        // Optionally show success message
         alert("User created successfully!");
       } catch (error) {
         console.error("Error creating user:", error);

@@ -14,7 +14,6 @@ function GoogleSignBtn({ isLogin }) {
             Authorization: `Bearer ${tokenResponse.access_token}`,
           },
         });
-        console.log("✅ Google User Info:", res.data);
         localStorage.setItem("googleUser", JSON.stringify(res.data));
         history.push("/home");
       } catch (error) {
