@@ -1,14 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import CartCard from "../components/CartCard";
 import api from "../services/api";
+import * as Yup from 'yup';
+import { Alert } from 'react-bootstrap';
+import { useAppContext } from "../context/Appcontext";
 
 function Cart() {
-  const [carts, setCarts] = useState([]);
-  const [userDetail, setUserDetail] = useState({});
-  const [selectedAddress, setSelectedAddress] = useState({});
+  const { carts, setCarts, userDetail, setUserDetail } = useAppContext();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  // Show success alert
+  const showSuccess = (message = 'Payment Successful! Order confirmed.') => {
+    setAlertMessage(message);
+    setShowSuccessAlert(true);
+    setShowErrorAlert(false);
+    
+    setTimeout(() => {
+      setShowSuccessAlert(false);
+    }, 5000);
+  };
+
+  // Show error alert
+  const showError = (message = 'Something went wrong. Please try again.') => {
+    setAlertMessage(message);
+    setShowErrorAlert(true);
+    setShowSuccessAlert(false);
+    
+    setTimeout(() => {
+      setShowErrorAlert(false);
+    }, 5000);
+  };
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required('First name is required'),
@@ -63,50 +88,33 @@ function Cart() {
     },
     validationSchema,
     onSubmit : async (formData) => {
-      if (!formik.isValid) {
-        alert('Please fix form errors before checkout');
-        return;
+      try {
+        setIsProcessing(true);
+        if (!formik.isValid) {
+          showError('Please fix form errors before checkout');
+          setIsProcessing(false);
+          return;
+        }
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        showSuccess('🎉 Order placed successfully! Thank you for your purchase.');
+        console.log('Order details:', {
+          formData,
+          cart: carts,
+          orderId: `ORD-${Date.now()}`,
+          total: carts.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+        });
+        setCarts([]);        
+      } catch (error) {
+        console.error('Checkout error:', error);
+        showError('Failed to process payment. Please try again.');
+      } finally {
+        setIsProcessing(false);
       }
-    
-      setIsProcessing(true);
-      
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      alert('✅ Payment Successful! Order confirmed.');
-      
-      console.log('Order details:', {
-        formData,
-        cart: carts,
-        orderId: `ORD-${Date.now()}`,
-        total: carts.reduce((sum, item) => sum + (item.price * item.quantity), 0)
-      });
-      
-      setIsProcessing(false);
     }
   });
 
-  useEffect(() => {
-    const getAllCarts = async () => {
-      try {
-        const user = JSON.parse(localStorage.getItem("user"));
-        setUserDetail(user);
-  
-        const response = await api.get("/carts");
-        const cartProducts = response.data.find(
-          (res) => res.userId == parseInt(user.id)
-        );
-        setCarts(cartProducts?.products || []);
-      } catch (err) {
-        console.error("Error fetching carts: ", err);
-      }
-    };
-    getAllCarts();
-  }, []);
-
   const handleAddressSelect = (id) => {
     if (id > 0 && userDetail) {
-      setSelectedAddress(userDetail);
-      // Pre-fill form with user data
       formik.setValues({
         ...formik.values,
         firstName: userDetail.name?.firstname || '',
@@ -117,18 +125,49 @@ function Cart() {
           `${userDetail.address.number} ${userDetail.address.street}, ${userDetail.address.city}, ${userDetail.address.zipcode}` : ''
       });
     } else {
-      setSelectedAddress({});
-      // Reset form to initial values
       formik.resetForm();
     }
   };
 
   return (
     <div className="container row m-auto">
-      {/* 🛒 Cart Summary */}
-      <CartCard cart={carts} />
+    {/* Success Alert */}
+    {showSuccessAlert && (
+      <Alert variant="success" className="position-fixed w-75 top-0 start-50 translate-middle-x mt-3 z-3" style={{minWidth: '400px'}}>
+        <Alert.Heading className="h6 mb-2">
+          <i className="bi bi-check-circle-fill me-2"></i>
+          Success!
+        </Alert.Heading>
+        {alertMessage}
+        <button 
+          type="button" 
+          className="btn-close position-absolute top-0 end-0 mt-2 me-2" 
+          onClick={() => setShowSuccessAlert(false)}
+          aria-label="Close"
+        ></button>
+      </Alert>
+    )}
+
+    {/* Error Alert */}
+    {showErrorAlert && (
+      <Alert variant="danger" className="position-fixed top-0 start-50 translate-middle-x mt-3 z-3" style={{minWidth: '400px'}}>
+        <Alert.Heading className="h6 mb-2">
+          <i className="bi bi-exclamation-triangle-fill me-2"></i>
+          Error
+        </Alert.Heading>
+        {alertMessage}
+        <button 
+          type="button" 
+          className="btn-close position-absolute top-0 end-0 mt-2 me-2" 
+          onClick={() => setShowErrorAlert(false)}
+          aria-label="Close"
+        ></button>
+      </Alert>
+    )}
+      {/* Cart Summary */}
+      <CartCard />
       
-      {/* 💳 Billing Form */}
+      {/* Billing Form */}
       <div className="col-md-7 col-lg-8 pt-4 w-100">
         <h4 className="mb-3">Billing address</h4>
         
@@ -455,7 +494,7 @@ function Cart() {
 
               <div className="col-md-6">
                 <label htmlFor="cc-number" className="form-label">
-                  Credit card number *
+                  {formik.values.paymentMethod === 'credit' ? 'Credit card number *' : 'Debit card number *'}
                 </label>
                 <input
                   type="text"
@@ -513,7 +552,7 @@ function Cart() {
           <hr className="my-4" />
 
           <button className="w-100 btn btn-primary btn-lg" type="submit">
-            Continue to checkout
+            {isProcessing && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>} Continue to checkout
           </button>
         </form>
       </div>

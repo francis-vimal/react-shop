@@ -1,8 +1,7 @@
-// ProductDetails.jsx
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import StarRating from "./StarRating";
-import api from "../services/api"; // axios instance
+import api from "../services/api";
 
 function ProductDetails() {
   const productID = useParams().id;
@@ -25,17 +24,6 @@ function ProductDetails() {
   }, [productID]);
 
   if (!product) return <div className="text-center mt-5">Loading...</div>;
-
-  // Example colors; you can dynamically use product.colors if available
-  const colors = ["black", "silver", "blue"];
-
-  // Example thumbnail images; using same image for simplicity
-  const thumbnails = [
-    product.image,
-    product.image,
-    product.image,
-    product.image,
-  ];
 
   return (
     <div className="container mt-5" style={{ backgroundColor: "white" }}>

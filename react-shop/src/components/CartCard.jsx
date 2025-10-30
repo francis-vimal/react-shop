@@ -1,15 +1,35 @@
 import React, { useState, useEffect } from "react";
 import ToolTip from "../components/ToolTip";
 import api from "../services/api";
+import { useAppContext } from "../context/Appcontext";
 
-function CartCard({ cart }) {
+function CartCard() {
+  const { carts, setCarts, userDetail, setUserDetail  } = useAppContext();
   const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getAllCarts = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        setUserDetail(user);
+  
+        const response = await api.get("/carts");
+        const cartProducts = response.data.find(
+          (res) => res.userId == parseInt(user.id)
+        );
+        setCarts(cartProducts?.products || []);
+      } catch (err) {
+        console.error("Error fetching carts: ", err);
+      }
+    };
+    getAllCarts();
+  }, []);
 
   useEffect(() => {
     const getAllProducts = async () => {
       try {
         const response = await api.get("/products");
-        const products = cart?.flatMap((cartProduct) =>
+        const products = carts?.flatMap((cartProduct) =>
           response.data.filter(
             (product) => product.id === cartProduct.productId
           )
@@ -20,7 +40,7 @@ function CartCard({ cart }) {
       }
     };
     getAllProducts();
-  }, [cart]);
+  }, [carts]);
   return (
     <div className="col-md-5 col-lg-4 pt-4 w-100">
       <h4 className="d-flex justify-content-between align-items-center mb-3">
