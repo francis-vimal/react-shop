@@ -80,10 +80,11 @@ react-shop/
 │
 ├── src/
 │   ├── components/      # Reusable UI components
+│   ├── context/         # React Context files for global state management (e.g. AppContext.jsx)
 │   ├── pages/           # Page components (Home, Cart, Login, etc.)
 │   ├── services/        # API logic and axios setup
-│   ├── App.js           # Root component
-│   └── index.js         # Application entry point
+│   ├── App.jsx           # Root component
+│   └── main.jsx         # Application entry point
 │
 ├── public/              # Static assets
 ├── package.json
