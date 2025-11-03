@@ -94,7 +94,7 @@ react-shop/
 
 ### 💡 Future Enhancements
 
-- 🔍 Add product search and filtering
+- 🔍 Add product filtering
 - 👤 Integrate real authentication
 - 🧾 Add order history and wishlist pages
 
