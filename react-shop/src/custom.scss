@@ -1,0 +1,72 @@
+$primary: #212529;
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+.cartIcon {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.categoryName {
+    margin: 0;
+    background-color: white;
+    border-radius: 50px;
+    color: black;
+    transition: all 0.2s ease-in;
+}
+
+.categoryReset {
+    font-size: 1.2rem;
+    border: 1px solid $primary;
+    background-color: white;
+    border-radius: 50%;
+    color: black;
+    transition: all 0.2s ease-in;
+}
+
+.categoryName:hover, .categoryReset:hover {
+    background-color: $primary;
+    color: white;
+}
+
+.categoryName.active {
+    background-color: $primary;
+    color: white;
+}
+
+.quantityIcon {
+    font-size: 1.2rem;
+    border: 1px solid rgb(121 121 121);
+    background-color: white;
+    border-radius: 5px;
+    color: rgb(121 121 121);
+    cursor: pointer;
+    transition: all 0.1s ease-in;
+}
+
+.quantityIcon:hover {
+    background-color: $primary;
+    color: white;
+}
+
+.quantityName {
+    font-size: .8rem;
+}
+
+.subtotal > * {
+    font-size: .8rem;
+    font-weight: 700;
+}
+
+.fadeIn {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

@@ -1,8 +1,8 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import './custom.scss';
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App.jsx";
-import "./index.css";
+import './index.css';
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AppProvider } from "./context/Appcontext.jsx";
 

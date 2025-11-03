@@ -42,7 +42,7 @@ function CartCard() {
     getAllProducts();
   }, [carts]);
   return (
-    <div className="col-md-5 col-lg-4 pt-4 w-100">
+    <div className="pt-4">
       <h4 className="d-flex justify-content-between align-items-center mb-3">
         <span className="text-primary">Your cart</span>
         <span className="badge bg-primary rounded-pill">
@@ -55,7 +55,7 @@ function CartCard() {
           products.map((product) => (
             <li
               key={product.id}
-              className="list-group-item d-flex justify-content-between lh-sm flex-sm-column"
+              className="list-group-item d-flex justify-content-between lh-sm flex-sm-column fadeIn"
             >
               <img
                 src={product.image}

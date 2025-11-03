@@ -1,3 +1,5 @@
+import React from "react";
+
 function StarRating({ rating, count }) {
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating - fullStars >= 0.5;

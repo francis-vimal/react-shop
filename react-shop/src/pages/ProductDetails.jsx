@@ -29,7 +29,7 @@ function ProductDetails() {
     <div className="container mt-5" style={{ backgroundColor: "white" }}>
       <div className="row">
         {/* Left Column: Images */}
-        <div className="col-md-6 mb-4">
+        <div className="d-flex col-md-6 mb-4 justify-content-center fadeIn">
           <img
             src={selectedImage}
             alt={product.title}

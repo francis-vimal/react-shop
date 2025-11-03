@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from 'formik';
 import CartCard from "../components/CartCard";
-import api from "../services/api";
 import * as Yup from 'yup';
 import { Alert } from 'react-bootstrap';
 import { useAppContext } from "../context/Appcontext";
@@ -97,12 +96,6 @@ function Cart() {
         }
         await new Promise(resolve => setTimeout(resolve, 2000));
         showSuccess('🎉 Order placed successfully! Thank you for your purchase.');
-        console.log('Order details:', {
-          formData,
-          cart: carts,
-          orderId: `ORD-${Date.now()}`,
-          total: carts.reduce((sum, item) => sum + (item.price * item.quantity), 0)
-        });
         setCarts([]);        
       } catch (error) {
         console.error('Checkout error:', error);
@@ -168,7 +161,7 @@ function Cart() {
       <CartCard />
       
       {/* Billing Form */}
-      <div className="col-md-7 col-lg-8 pt-4 w-100">
+      <div className="pt-4">
         <h4 className="mb-3">Billing address</h4>
         
         <div className="col-12 mb-3">
